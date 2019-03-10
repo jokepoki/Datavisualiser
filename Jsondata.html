@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="PSPad editor, www.pspad.com">
+  <title></title>
+  </head>
+  <style>
+canvas {
+  max-width:700px;
+  margin: auto;
+  border: 3px solid #73AD21;
+}
+</style>
+  <body>
+  <canvas id="myChart" width="400" height="400"></canvas>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  
+   $(document).ready(function () {
+        console.log("Hello World");
+        var url = "https://opendata.hopefully.works/api/events";
+        console.log(url);
+        fetchJson(url);
+       });
+       
+       
+       var lista = {};
+       function fetchJson(action) {
+        var x = "";
+        var y = 0;
+        $.ajax({
+        url: action,
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            cache: false,
+            authorization: "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc0LCJlbWFpbCI6Imphcmtrby5yYXV0ZWxsQGdtYWlsLmNvbSIsImlhdCI6MTU1MjIyNjE0MX0.mi0hUr-kO8vnm1YQ-7pPDHcJOzxIeOCrbEeZEtSWu24",
+            beforeSend: function(xhr) { xhr.setRequestHeader("Authorization", "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc0LCJlbWFpbCI6Imphcmtrby5yYXV0ZWxsQGdtYWlsLmNvbSIsImlhdCI6MTU1MjIyNjE0MX0.mi0hUr-kO8vnm1YQ-7pPDHcJOzxIeOCrbEeZEtSWu24"); },
+            success: function (result) {
+                console.log(result);
+                for (x in result) {
+                    
+                    console.log(x);
+                    document.getElementById("sensori").innerHTML += x + " " + result[x] + "<br>";
+                    lista[y] = result[x];
+                    console.log(lista[y])
+                    y++;
+                    }
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["Sensor 1", "Sensor 2", "Sensor 3", "Sensor 4"],
+        datasets: [{
+            label: lista[0],
+            data: [lista[1],lista[2],lista[3], lista[4]],
+            
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+                }
+            });
+        }
+
+
+
+
+            
+       
+  </script>
+  
+  <p id ="sensori"></p>
+  </body>
+</html>
